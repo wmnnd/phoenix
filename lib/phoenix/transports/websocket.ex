@@ -78,6 +78,8 @@ defmodule Phoenix.Transports.WebSocket do
       |> Transport.force_ssl(handler, endpoint, opts)
       |> IO.inspect
       |> Transport.check_origin(handler, endpoint, opts)
+      
+   IO.puts "Conn set up"
 
     case conn do
       %{halted: false} = conn ->
@@ -88,6 +90,7 @@ defmodule Phoenix.Transports.WebSocket do
           {:ok, socket} ->
             {:ok, conn, {__MODULE__, {socket, opts}}}
           :error ->
+            IO.puts "Transport.connect failed!"
             send_resp(conn, 403, "")
             {:error, conn}
         end
