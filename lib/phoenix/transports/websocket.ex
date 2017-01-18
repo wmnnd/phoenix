@@ -65,13 +65,18 @@ defmodule Phoenix.Transports.WebSocket do
   @doc false
   def init(%Plug.Conn{method: "GET"} = conn, {endpoint, handler, transport}) do
     {_, opts} = handler.__transport__(transport)
+    
 
     conn =
       conn
       |> code_reload(opts, endpoint)
+      |> IO.inspect
       |> fetch_query_params()
+      |> IO.inspect
       |> Transport.transport_log(opts[:transport_log])
+      |> IO.inspect
       |> Transport.force_ssl(handler, endpoint, opts)
+      |> IO.inspect
       |> Transport.check_origin(handler, endpoint, opts)
 
     case conn do
