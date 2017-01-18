@@ -144,6 +144,7 @@ defmodule Phoenix.Socket.Transport do
     vsn = params["vsn"] || "1.0.0"
 
     if Version.match?(vsn, @client_vsn_requirements) do
+    IO.puts "version match"
       connect_vsn(endpoint, handler, transport_name, transport, serializer, params)
     else
       Logger.error "The client's requested channel transport version \"#{vsn}\" " <>
@@ -152,6 +153,7 @@ defmodule Phoenix.Socket.Transport do
     end
   end
   defp connect_vsn(endpoint, handler, transport_name, transport, serializer, params) do
+  IO.puts "connect_vsn"
     socket = %Socket{endpoint: endpoint,
                      transport: transport,
                      transport_pid: self(),
@@ -159,6 +161,8 @@ defmodule Phoenix.Socket.Transport do
                      handler: handler,
                      pubsub_server: endpoint.__pubsub_server__,
                      serializer: serializer}
+                     
+                    IO.inspect socket
 
     case handler.connect(params, socket) do
       {:ok, socket} ->
@@ -172,6 +176,7 @@ defmodule Phoenix.Socket.Transport do
         end
 
       :error ->
+        IO.puts "ERROR in handler.connect!"
         :error
 
       invalid ->
